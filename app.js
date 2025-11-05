@@ -1,27 +1,39 @@
-const express = require('express');
-const cors = require('cors');
-const app = express();
-const port = 3000;
-//const bodyParser = require('body-parser');
-app.use(cors());
+import { config } from 'dotenv';
+config();
 
-// Middleware to parse JSON bodies
-//app.use(bodyParser.json());
-// Middleware to log request details
+import express from 'express';
+import cors from 'cors';
+import dbConnect from './config/mongo.js';
+
+// Connect to MongoDB
+dbConnect();
+
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+// Middlewares
+app.use(cors());
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+// Simple request logger middleware
 app.use((req, res, next) => {
     console.log(`${req.method} ${req.url} - ${new Date().toISOString()}`);
     next();
 });
 
-// Sample route
+// Routes
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+  res.send('Hello World!');
 });
 
 app.get('/status', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+// Start the server
+app.listen(PORT, () => {
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
+
+export default app;
