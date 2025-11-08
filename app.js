@@ -5,6 +5,8 @@ import express from 'express';
 import cors from 'cors';
 import dbConnect from './config/mongo.js';
 
+import routes from './routes/index.js';
+
 // Connect to MongoDB
 dbConnect();
 
@@ -30,6 +32,8 @@ app.get('/', (req, res) => {
 app.get('/status', (req, res) => {
     res.json({ status: 'OK', timestamp: new Date().toISOString() });
 });
+
+app.use('/api', routes);
 
 // Start the server
 app.listen(PORT, () => {
