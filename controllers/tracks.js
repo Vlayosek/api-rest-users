@@ -5,7 +5,7 @@ import models from '../models/index.js';
  */
 const getItems = async (req, res) => {
     const data = await models.trackModel.find({});
-    res.send({ message: 'Get all tracks', tracks: [] });
+    res.send({ message: 'Get all tracks', items: data });
 }
 
 /**
@@ -23,9 +23,11 @@ const getItem  = (id) => {
  * @param {*} item 
  * @returns 
  */
-const createItem = (item) => {
-    // Logic to create a new item
-    return `Created ${item}`;
+const createItem = async (req,res) => {
+    const { body } = req
+    console.log(body);
+    const data = await models.trackModel.create(body);
+    res.send({ message: 'Item created', item: data });
 }
 
 /**
